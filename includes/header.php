@@ -138,8 +138,6 @@ $isHome = str_contains($pageTitle, 'Book flights');
                     <?php endif; ?>
                 <?php else: ?>
                     <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base) ?>/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base) ?>/signup.php">Sign up</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base) ?>/login.php">Sign in</a></li>
                 <?php endif; ?>
             </ul>
             <div class="d-flex align-items-center gap-2">

@@ -27,51 +27,79 @@ declare(strict_types=1);
                     $bookable = Flight::isBookable($fid) && $seats > 0;
                     ?>
                     <div class="col-md-6 col-xl-4">
-                        <article class="ofbms-flight-card-pro h-100 d-flex flex-column hover-elevate" style="background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05); border: 1px solid rgba(226, 232, 240, 0.8); transition: transform 0.2s ease, box-shadow 0.2s ease;">
-                            <div style="height: 140px; width: 100%; background: url('<?= htmlspecialchars($base) ?>/assets/img/flight_header.png') center/cover no-repeat; position: relative;">
-                                <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);"></div>
-                                <div style="position: absolute; top: 15px; right: 15px;">
-                                    <span class="badge rounded-pill <?= $f['status'] === 'Scheduled' ? 'bg-success' : 'bg-warning text-dark' ?> shadow-sm"><span style="opacity: 0.95;"><?= htmlspecialchars($f['status']) ?></span></span>
+                        <article class="ofbms-flight-card-pro h-100 d-flex flex-column hover-elevate" style="background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);">
+                            <!-- Image Header -->
+                            <div style="height: 180px; width: 100%; position: relative; overflow: hidden;" class="flight-img-wrap">
+                                <div class="flight-img" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('<?= htmlspecialchars($base) ?>/assets/img/flight_header.png') center/cover no-repeat; transition: transform 0.5s ease;"></div>
+                                <!-- Gradient overlay -->
+                                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);"></div>
+                                
+                                <!-- Status -->
+                                <div style="position: absolute; top: 16px; right: 16px;">
+                                    <span class="badge rounded-pill <?= $f['status'] === 'Scheduled' ? 'bg-success' : 'bg-warning text-dark' ?> px-3 py-2 fw-semibold" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15); letter-spacing: 0.5px;"><i class="bi bi-record-circle-fill me-1 small"></i> <?= htmlspecialchars($f['status']) ?></span>
                                 </div>
-                                <div style="position: absolute; bottom: 12px; left: 16px;">
-                                    <span class="badge bg-white text-primary border border-primary border-opacity-10 d-inline-flex align-items-center px-2 py-1 shadow-sm fs-6"><i class="bi bi-airplane-fill me-1"></i> Flight <?= htmlspecialchars($f['flight_no']) ?></span>
+                                
+                                <!-- Airline / Flight Info -->
+                                <div style="position: absolute; bottom: 16px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+                                    <div>
+                                        <span class="badge bg-white text-dark mb-2 px-2 py-1 rounded" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;">Wehliye Air</span>
+                                        <h4 class="text-white fw-bold mb-0" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-size: 1.3rem;"><i class="bi bi-airplane-engines me-2"></i>Flight <?= htmlspecialchars($f['flight_no']) ?></h4>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="text-white-50 d-block small fw-semibold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 1px;">Starting at</span>
+                                        <span class="text-white fw-bold fs-4 lh-1" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">$<?= number_format((float) $f['base_price'], 0) ?></span>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="d-flex flex-column flex-grow-1 p-3 p-md-4">
-                                <div class="d-flex justify-content-end mb-3">
-                                    <div class="text-end mt-n2">
-                                        <div class="text-primary fw-bold" style="font-size: 1.6rem; letter-spacing: -0.02em;">$<?= number_format((float) $f['base_price'], 2) ?></div>
-                                        <div class="small fw-semibold text-muted text-uppercase" style="letter-spacing: 0.05em; font-size: 0.7rem;">per passenger</div>
+                            <div class="d-flex flex-column flex-grow-1 p-4 pb-4">
+                                <!-- Route visualization -->
+                                <div class="d-flex align-items-center justify-content-between mb-4 position-relative">
+                                    <!-- Dashed line connecting -->
+                                    <div style="position: absolute; top: 50%; left: 30px; right: 30px; height: 2px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
+                                    
+                                    <div class="text-center position-relative z-bg" style="background: white; padding-right: 10px; z-index: 2; width: 40%;">
+                                        <h2 class="fw-bold mb-0 text-dark" style="font-size: 2rem; letter-spacing: -1px;"><?= htmlspecialchars(strlen($f['origin']) > 3 ? substr(strtoupper($f['origin']), 0, 3) : strtoupper($f['origin'])) ?></h2>
+                                        <span class="small text-muted fw-semibold d-block text-truncate"><?= htmlspecialchars($f['origin']) ?></span>
                                     </div>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-                                    <div class="text-center w-100">
-                                        <div class="fw-bold text-dark fs-5 mb-0" style="letter-spacing: -1px;"><?= htmlspecialchars($f['origin']) ?></div>
-                                        <div class="small text-muted fw-semibold">Origin</div>
+                                    
+                                    <div class="position-relative" style="z-index: 3; background: white; padding: 0 8px;">
+                                        <div class="btn btn-sm btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--ofbms-sky) 0%, var(--ofbms-sky-deep) 100%); border: none;">
+                                            <i class="bi bi-airplane-fill text-white"></i>
+                                        </div>
                                     </div>
-                                    <div class="px-3 text-center w-100" style="color: var(--ofbms-sky);">
-                                        <i class="bi bi-airplane" style="font-size: 1.4rem;"></i>
-                                        <div class="d-block w-100 border-bottom border-primary border-2 opacity-25 mt-1" style="height: 1px;"></div>
-                                    </div>
-                                    <div class="text-center w-100">
-                                        <div class="fw-bold text-dark fs-5 mb-0" style="letter-spacing: -1px;"><?= htmlspecialchars($f['destination']) ?></div>
-                                        <div class="small text-muted fw-semibold">Destination</div>
+                                    
+                                    <div class="text-center position-relative z-bg" style="background: white; padding-left: 10px; z-index: 2; width: 40%;">
+                                        <h2 class="fw-bold mb-0 text-dark" style="font-size: 2rem; letter-spacing: -1px;"><?= htmlspecialchars(strlen($f['destination']) > 3 ? substr(strtoupper($f['destination']), 0, 3) : strtoupper($f['destination'])) ?></h2>
+                                        <span class="small text-muted fw-semibold d-block text-truncate"><?= htmlspecialchars($f['destination']) ?></span>
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap gap-2 mb-4 mt-auto border-start border-4 border-primary ps-3 bg-light bg-opacity-50 py-2 rounded-end">
-                                    <div class="small w-100">
-                                        <span class="text-muted d-block" style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Departure</span>
-                                        <strong class="text-dark"><i class="bi bi-calendar-event me-2 text-primary"></i><?= htmlspecialchars($f['departure_time']) ?></strong>
+                                <!-- Info Grid -->
+                                <div class="row g-2 mb-4 rounded-3 p-3" style="background: #f8fafc;">
+                                    <div class="col-6 border-end border-light">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded bg-white shadow-sm p-2 text-primary border border-light"><i class="bi bi-calendar-event"></i></div>
+                                            <div>
+                                                <span class="d-block small text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Departure</span>
+                                                <span class="fw-semibold text-dark small"><?= date('M j, Y', strtotime($f['departure_time'])) ?></span>
+                                                <span class="d-block text-muted" style="font-size: 0.7rem;"><?= date('H:i', strtotime($f['departure_time'])) ?></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="small w-100 mt-2">
-                                        <span class="text-muted d-block" style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Aircraft & Seats</span>
-                                        <strong class="text-dark"><i class="bi bi-bezier2 me-2 text-info"></i><?= htmlspecialchars($f['aircraft']) ?> <span class="mx-1 text-muted">•</span> <i class="bi bi-people me-1 <?= $seats < 10 ? 'text-danger' : 'text-success' ?>"></i><?= $seats ?> remaining</strong>
+                                    <div class="col-6 ps-3">
+                                         <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded bg-white shadow-sm p-2 text-info border border-light"><i class="bi bi-bezier2"></i></div>
+                                            <div style="min-width: 0;">
+                                                <span class="d-block small text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Aircraft</span>
+                                                <span class="fw-semibold text-dark small text-truncate d-block" style="max-width: 100%;"><?= htmlspecialchars($f['aircraft']) ?></span>
+                                                <span class="d-block <?= $seats < 10 ? 'text-danger' : 'text-success' ?> fw-semibold" style="font-size: 0.7rem;"><?= $seats ?> seats left</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
+                                <!-- Booking Area -->
                                 <div class="mt-auto pt-3 border-top border-light">
                                     <?php if ($user && $user['role'] === 'passenger' && $bookable): ?>
                                         <form class="row g-2 align-items-center w-100" method="post" action="<?= htmlspecialchars($base) ?>/booking_process.php">

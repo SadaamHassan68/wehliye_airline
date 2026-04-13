@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
@@ -32,61 +31,115 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
         }
     }
 }
-
-$pageTitle = 'Create account — Wehliye Airline';
-$adminSidebar = false;
-$user = null;
-
-require __DIR__ . '/includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account — Wehliye Airline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="<?= htmlspecialchars($base) ?>/assets/css/app.css?v=1.9" rel="stylesheet">
+    <style>
+        body { background: #fff; min-height: 100vh; display: flex; flex-direction: column; font-family: "DM Sans", sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        .auth-split { display: flex; min-height: 100vh; }
+        .auth-brand { position: absolute; top: 2.5rem; left: 3rem; z-index: 10; display: flex; align-items: center; text-decoration: none; color: #fff; font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; }
+        .auth-brand .mark { background: linear-gradient(135deg, #7c3aed 0%, #38bdf8 100%); color: #fff; width: 36px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 10px; margin-right: 0.75rem; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4); }
+        .auth-panel-img { flex: 1.2; position: relative; background: url('<?= htmlspecialchars($base) ?>/assets/img/hero_bg.png') center/cover no-repeat; display: none; }
+        @media (min-width: 992px) { .auth-panel-img { display: block; } }
+        .auth-panel-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(22, 15, 42, 0.8) 0%, rgba(124, 58, 237, 0.7) 100%); mix-blend-mode: multiply; }
+        .auth-panel-img-content { position: absolute; bottom: 4rem; left: 3rem; right: 3rem; z-index: 2; color: #fff; }
+        .auth-panel-form { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; background: #ffffff; padding: 3rem 2rem; }
+        @media (min-width: 992px) { .auth-panel-form { padding: 4rem 5rem; max-width: 650px; } .auth-brand { color: #160f2a; } .auth-brand .mark { box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25); } }
+        .form-wrap { max-width: 420px; width: 100%; margin: 0 auto; }
+        .auth-title { font-weight: 800; font-size: 2.25rem; letter-spacing: -0.03em; color: #0f172a; margin-bottom: 0.5rem; }
+        .auth-subtitle { color: #64748b; font-size: 1rem; margin-bottom: 2.5rem; }
+        .pro-input { background: #f8fafc; border: 2px solid transparent; border-radius: 12px; padding: 0.9rem 1.25rem; font-weight: 500; font-size: 1rem; color: #0f172a; transition: all 0.2s ease; }
+        .pro-input:focus { background: #ffffff; border-color: #7c3aed; box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1); outline: none; }
+        .pro-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #64748b; margin-bottom: 0.5rem; display: block; }
+        .pro-btn { background: #1e1540; color: #ffffff; border: none; border-radius: 12px; padding: 1rem; font-weight: 700; font-size: 1rem; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(30, 21, 64, 0.15); display: flex; justify-content: center; align-items: center; width: 100%; }
+        .pro-btn:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124, 58, 237, 0.25); color: #fff; }
+        .auth-alert { background: #fef2f2; border: 1px solid #fee2e2; color: #b91c1c; border-radius: 12px; padding: 1rem; margin-bottom: 2rem; display: flex; align-items: center; font-weight: 500; }
+        .back-link { display: inline-flex; align-items: center; color: #64748b; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; margin-top: 2rem; }
+        .back-link:hover { color: #0f172a; }
+    </style>
+</head>
+<body>
 
-<div class="row justify-content-center py-lg-3">
-    <div class="col-md-6 col-lg-5">
-        <div class="card ofbms-card ofbms-login-card shadow">
-            <div class="card-body p-4 p-md-5">
-                <?php if ($success): ?>
-                    <div class="text-center mb-4">
-                        <div class="ofbms-feature-icon mx-auto bg-success-subtle text-success"><i class="bi bi-check-lg"></i></div>
-                        <h5 class="card-title mb-1">Account created</h5>
-                        <p class="text-muted small mb-0">You can sign in with your email and password.</p>
+<a href="<?= htmlspecialchars($base) ?>/index.php" class="auth-brand">
+    <span class="mark"><i class="bi bi-airplane-fill"></i></span> Wehliye
+</a>
+
+<div class="auth-split">
+    <div class="auth-panel-img">
+        <div class="auth-panel-img-content">
+            <h2 class="display-5 fw-bold mb-3" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Start your journey</h2>
+            <p class="fs-5 text-white-50 mb-0" style="max-width: 400px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Join Wehliye Airline today to book flights quickly, manage your reservations, and unlock premium travel features.</p>
+        </div>
+    </div>
+    <div class="auth-panel-form">
+        <div class="form-wrap">
+            <h1 class="auth-title">Create account</h1>
+            <p class="auth-subtitle">Join us and streamline your travel experience.</p>
+
+            <?php if ($success): ?>
+                <div class="text-center py-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-check-lg" style="font-size: 2.5rem;"></i>
                     </div>
-                    <a class="btn btn-primary ofbms-btn-primary w-100 py-2 rounded-3" href="<?= htmlspecialchars($base) ?>/login.php">Continue to sign in</a>
-                <?php else: ?>
-                    <div class="text-center mb-4">
-                        <div class="ofbms-feature-icon mx-auto"><i class="bi bi-person-plus"></i></div>
-                        <h5 class="card-title mb-1">Passenger sign up</h5>
-                        <p class="text-muted small mb-0">Create an account to search and book flights.</p>
+                    <h4 class="fw-bold text-dark mb-2">Account Created!</h4>
+                    <p class="text-muted mb-4">Your account is ready. You can now sign in using your email and password.</p>
+                    <a class="pro-btn text-decoration-none text-center d-block" href="<?= htmlspecialchars($base) ?>/login.php">Continue to Sign In <i class="bi bi-arrow-right ms-2"></i></a>
+                </div>
+            <?php else: ?>
+                <?php if ($error): ?>
+                    <div class="auth-alert">
+                        <i class="bi bi-exclamation-octagon-fill fs-5 me-3"></i> <?= htmlspecialchars($error) ?>
                     </div>
-                    <?php if ($error): ?>
-                        <div class="alert alert-danger border-0 rounded-3 small mb-3"><?= htmlspecialchars($error) ?></div>
-                    <?php endif; ?>
-                    <form method="post" action="<?= htmlspecialchars($base) ?>/signup.php">
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold">Full name</label>
-                            <input class="form-control form-control-lg rounded-3" name="full_name" required maxlength="120" placeholder="Your name" value="<?= htmlspecialchars((string) ($_POST['full_name'] ?? '')) ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold">Email</label>
-                            <input class="form-control form-control-lg rounded-3" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com" value="<?= htmlspecialchars((string) ($_POST['email'] ?? '')) ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold">Password</label>
-                            <input class="form-control form-control-lg rounded-3" type="password" name="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters">
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label small fw-semibold">Confirm password</label>
-                            <input class="form-control form-control-lg rounded-3" type="password" name="password_confirm" autocomplete="new-password" required minlength="8" placeholder="Repeat password">
-                        </div>
-                        <button class="btn btn-primary ofbms-btn-primary w-100 py-2 rounded-3" name="signup" type="submit" value="1">Create account</button>
-                    </form>
-                    <p class="text-center text-muted small mt-4 mb-0">
-                        Already have an account? <a href="<?= htmlspecialchars($base) ?>/login.php" class="text-decoration-none fw-semibold">Sign in</a>
-                    </p>
                 <?php endif; ?>
-                <p class="text-center text-muted small mt-3 mb-0"><a href="<?= htmlspecialchars($base) ?>/index.php" class="text-decoration-none">← Back to home</a></p>
-            </div>
+
+                <form method="post" action="<?= htmlspecialchars($base) ?>/signup.php">
+                    <div class="mb-3">
+                        <label class="pro-label">Full Name</label>
+                        <input type="text" class="form-control pro-input" name="full_name" placeholder="John Doe" required maxlength="120" value="<?= htmlspecialchars((string) ($_POST['full_name'] ?? '')) ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label class="pro-label">Email address</label>
+                        <input type="email" class="form-control pro-input" name="email" placeholder="name@example.com" required autocomplete="email" maxlength="120" value="<?= htmlspecialchars((string) ($_POST['email'] ?? '')) ?>">
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label class="pro-label">Password</label>
+                            <input type="password" class="form-control pro-input" name="password" placeholder="••••••••" required minlength="8" autocomplete="new-password">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="pro-label">Confirm Password</label>
+                            <input type="password" class="form-control pro-input" name="password_confirm" placeholder="••••••••" required minlength="8" autocomplete="new-password">
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-4 mt-2">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required style="border-color: #cbd5e1; border-radius: 4px;">
+                        <label class="form-check-label text-muted fw-medium small" for="termsCheck">I agree to the <a href="#" class="text-decoration-none fw-bold" style="color: #7c3aed;">Terms of Service</a> & <a href="#" class="text-decoration-none fw-bold" style="color: #7c3aed;">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" name="signup" value="1" class="pro-btn">
+                        Create Account <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </form>
+
+                <div class="mt-5 text-center">
+                    <p class="text-muted fw-medium">Already have an account? <a href="<?= htmlspecialchars($base) ?>/login.php" class="fw-bold text-decoration-none" style="color: #7c3aed;">Sign in</a></p>
+                    <a href="<?= htmlspecialchars($base) ?>/index.php" class="back-link"><i class="bi bi-arrow-left me-2"></i> Return to home</a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+</body>
+</html>
